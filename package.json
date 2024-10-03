@@ -48,6 +48,7 @@
     "@nestjs/schematics": "^10.0.1",
     "@nestjs/testing": "^10.0.2",
     "@ngrx/schematics": "^18.0.2",
+    "@ngrx/store-devtools": "^18.0.2",
     "@nx/angular": "^19.8.2",
     "@nx/cypress": "19.8.2",
     "@nx/esbuild": "19.8.2",
