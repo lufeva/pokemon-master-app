@@ -21,7 +21,10 @@
             "input": "apps/pokemon-master-ui/public"
           }
         ],
-        "styles": ["apps/pokemon-master-ui/src/styles.css"],
+        "styles": [
+          "@angular/material/prebuilt-themes/magenta-violet.css",
+          "apps/pokemon-master-ui/src/styles.scss"
+        ],
         "scripts": []
       },
       "configurations": {
