@@ -1,7 +1,6 @@
+import { PokemonDTO } from '@pokemon-app/shared-lib';
+
 /**
  * Interface for the 'Pokemons' data
  */
-export interface PokemonsEntity {
-  id: string | number; // Primary ID
-  name: string;
-}
+export type PokemonsEntity = PokemonDTO;

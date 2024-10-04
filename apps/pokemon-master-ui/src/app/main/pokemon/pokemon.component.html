@@ -1,1 +1,7 @@
-<router-outlet></router-outlet>
+<div class="pokemon-page">
+  @if(pokemonListLoaded$ | async) {
+  <app-pokemon-main [pokemonList]="pokemonList$ | async"></app-pokemon-main>
+  } @else {
+  <mat-spinner></mat-spinner>
+  }
+</div>

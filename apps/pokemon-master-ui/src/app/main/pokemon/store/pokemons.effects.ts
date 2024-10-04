@@ -1,23 +1,31 @@
 import { Injectable, inject } from '@angular/core';
-import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { switchMap, catchError, of } from 'rxjs';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { catchError, map, of, switchMap } from 'rxjs';
+import { PokemonService } from '../services/pokemon-api.service';
 import * as PokemonsActions from './pokemons.actions';
-import * as PokemonsFeature from './pokemons.reducer';
+import { PokemonsEntity } from './pokemons.models';
 
 @Injectable()
 export class PokemonsEffects {
   private actions$ = inject(Actions);
 
+  constructor(private pokemonService: PokemonService) {}
+
   init$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(PokemonsActions.initPokemons),
+      ofType(PokemonsActions.loadPokemons),
       switchMap(() =>
-        of(PokemonsActions.loadPokemonsSuccess({ pokemons: [] }))
-      ),
-      catchError((error) => {
-        console.error('Error', error);
-        return of(PokemonsActions.loadPokemonsFailure({ error }));
-      })
+        // TODO: Configure offset and limit values dynamically for paginator
+        this.pokemonService.getPokemonList(10, 0).pipe(
+          map((pokemons: PokemonsEntity[]) =>
+            PokemonsActions.loadPokemonsSuccess({ pokemons })
+          ),
+          catchError((error) => {
+            console.error('Error', error);
+            return of(PokemonsActions.loadPokemonsFailure({ error }));
+          })
+        )
+      )
     )
   );
 }

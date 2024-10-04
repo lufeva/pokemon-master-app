@@ -21,6 +21,11 @@ export const selectPokemonsError = createSelector(
   (state: PokemonsState) => state.error
 );
 
+export const selectPokemonsError = createSelector(
+  selectPokemonsState,
+  (state: PokemonsState) => state.error
+);
+
 export const selectAllPokemons = createSelector(
   selectPokemonsState,
   (state: PokemonsState) => selectAll(state)

@@ -1,5 +1,5 @@
-import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { createReducer, on, Action } from '@ngrx/store';
+import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
+import { Action, createReducer, on } from '@ngrx/store';
 
 import * as PokemonsActions from './pokemons.actions';
 import { PokemonsEntity } from './pokemons.models';
@@ -10,6 +10,7 @@ export interface PokemonsState extends EntityState<PokemonsEntity> {
   selectedId?: string | number; // which Pokemons record has been selected
   loaded: boolean; // has the Pokemons list been loaded
   error?: string | null; // last known error (if any)
+  page: number; // page of the table list of pokemons
 }
 
 export interface PokemonsPartialState {
@@ -23,11 +24,12 @@ export const initialPokemonsState: PokemonsState =
   pokemonsAdapter.getInitialState({
     // set initial required properties
     loaded: false,
+    page: 0,
   });
 
 const reducer = createReducer(
   initialPokemonsState,
-  on(PokemonsActions.initPokemons, (state) => ({
+  on(PokemonsActions.loadPokemons, (state) => ({
     ...state,
     loaded: false,
     error: null,

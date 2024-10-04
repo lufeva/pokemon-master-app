@@ -1,11 +1,11 @@
-import { INestApplication, Logger } from '@nestjs/common';
+import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-import { AppModule } from './app/app.module';
+import { MainModule } from './main.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(MainModule);
 
   const globalPrefix = 'pokemon-api-gateway';
   app.setGlobalPrefix(globalPrefix);
@@ -13,6 +13,19 @@ async function bootstrap() {
   setupApiDocumentation(app);
 
   const port = process.env.PORT || 3000;
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      transformOptions: { enableImplicitConversion: true },
+    })
+  );
+  // Needs to be configured dynamically for different environments
+  app.enableCors({
+    origin: 'http://localhost:4200',
+    methods: 'GET,POST,PUT,DELETE',
+    allowedHeaders: 'Content-Type, Authorization',
+  });
+
   await app.listen(port);
 
   Logger.log(
